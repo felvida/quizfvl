@@ -5,9 +5,13 @@ exports.question = function(req, res) {
 
 // GET /quizes/answer
 exports.answer = function(req, res) {
-  var resultado = 'Incorrecto';
+  var resultado = 'Incorrecta';
   if (req.query.respuesta ==='Lisboa') {
-    resultado = 'Correcto';  }
+    resultado = 'Correcta';  }
   res.render(    'quizes/answer',  { quiz: req.quiz, respuesta: resultado    }  );
 };
 
+// GET /quizes/author
+exports.author = function(req, res) {
+   res.render(    'quizes/author', { pregunta: 'Capital de Portugal' }  );
+};

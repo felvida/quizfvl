@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var partials= require( 'express-partials'); // pag.40
+
 var routes = require('./routes/index');
 // var users = require('./routes/users'); // segun pag.24
 
@@ -13,6 +15,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use( partials() ); // segun pag.40
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico')); // segun pag. 27
