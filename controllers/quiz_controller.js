@@ -11,8 +11,8 @@ exports.question = function(req, res) {
 // GET /quizes/answer
 exports.answer = function(req, res) {
  models.Quiz.findAll().success(function(quiz){
-  var resultado = 'Incorrecta';
-  if (req.query.respuesta ===quiz[0].respuesta) {
+  var resultado = 'Incorrecta'; // que no distinga mayusculas
+  if ( req.query.respuesta.toLowerCase() ===quiz[0].respuesta.toLowerCase() ) {
     resultado = 'Correcta';  }
   res.render('quizes/answer',{ quiz: req.quiz, respuesta: resultado });
   })
@@ -20,5 +20,5 @@ exports.answer = function(req, res) {
 
 // GET /quizes/author
 exports.author = function(req, res) {
-   res.render(    'quizes/author', { pregunta: 'Capital de Portugal' }  );
+   res.render(    'quizes/author', {  }  );
 };

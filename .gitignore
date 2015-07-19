@@ -3,3 +3,5 @@ node_modules
 ico
 run.bat
 quiz.sqlite
+.env
+
