@@ -1,6 +1,6 @@
 ﻿var path = require('path');
 console.log("imported path");
-// para Postgress o Sqlite
+// para Postgress o Sqlite, lee fic. .env
 // Postgres DATABASE_URL = postgres://user:passwd@host:port/database
 // SQLite   DATABASE_URL = sqlite://:@:/
 var urlK = process.env.DATABASE_URL; // PATH si lo hace
@@ -21,7 +21,7 @@ console.log("creadas vars. gestion BD:"+protocol);
 var Sequelize = require('sequelize'); // Cargar Modelo ORM
 console.log("imported Sequelize");
 
-// Sequelize usa BBDD SQLite o Postgres, segun DATABASE_URL
+// Sequelize usa BBDD SQLite(local) o Postgres(Web), segun var. sacadas de DATABASE_URL
 var sequelize = new Sequelize(DB_name, user, pwd, 
   { dialect:  protocol,
     protocol: protocol,
