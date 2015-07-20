@@ -40,13 +40,14 @@ console.log("Iniciando BD");
 // sequelize.sync() inicializar tabla quiz (pregunta,respuesta,userId) en DB
 sequelize.sync().then(function() {     // then(..) ejecuta el manejador una vez creada la tabla
      Quiz.count().then(function (count){
-		  console.log("Regs.=" + count );
+		  console.log("tenia=" + count+" regs." );
           if(count === 0) {   // la tabla se inicializa solo si está vacía
-		    console.log("Creandola 1reg.");
-            Quiz.create(
-				{pregunta: 'Capital de Italia',   respuesta: 'Roma' }
-                 )
-			.success(function(){console.log("BD creada")});
+		    console.log("Creandola MultiRegistro."); // pag.28
+            Quiz.create({pregunta: 'Capital de Italia',   respuesta: 'Roma' }  );
+			Quiz.create({pregunta: 'Capital de Argentina',   respuesta: 'Buenos Aires' } );
+			Quiz.create({pregunta: 'Capital de Francia',   respuesta: 'Paris' } );
+			Quiz.create({pregunta: 'Capital de Portugal',   respuesta: 'Lisboa' })
+			.success(function(){console.log("BD creada")}); //then
           }; // if count
         }); // Quiz.count
    

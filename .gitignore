@@ -4,4 +4,4 @@ ico
 *.bat
 quiz.sqlite
 .env
-
+*~

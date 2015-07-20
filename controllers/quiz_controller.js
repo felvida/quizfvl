@@ -1,22 +1,28 @@
+var models = require('../models/models.js'); //fvl
 
-var models = require('../models/models.js');
-
-// GET /quizes/question
-exports.question = function(req, res) {
- models.Quiz.findAll().success(function(quiz){
-  res.render('quizes/question',{ pregunta: quiz[0].pregunta } );	
- })	  
+// GET /quizes pag.28 2a
+exports.index = function(req, res) {
+	models.Quiz.findAll().then(function(quizes) {
+		res.render('quizes/index.ejs', { quizes: quizes});
+	})
+};
+// GET /quizes/:id ahora llama show pag.27 paso 1a
+exports.show = function(req, res) {
+	models.Quiz.find(req.params.quizId).then(function(quiz) {
+		res.render('quizes/show', {quiz: quiz, errors: []}); // pag. 27 quiz: quiz
+	})
 };
 
-// GET /quizes/answer
+// GET /quizes/:id/answer pag.27 paso 1a
 exports.answer = function(req, res) {
- models.Quiz.findAll().success(function(quiz){
+ models.Quiz.find(req.params.quizId).then(function(quiz){
   var resultado = 'Incorrecta'; // que no distinga mayusculas
-  if ( req.query.respuesta.toLowerCase() ===quiz[0].respuesta.toLowerCase() ) {
+  if ( req.query.respuesta.toLowerCase() ===quiz.respuesta.toLowerCase() ) {
     resultado = 'Correcta';  }
   res.render('quizes/answer',{ quiz: req.quiz, respuesta: resultado });
   })
 };
+
 
 // GET /quizes/author
 exports.author = function(req, res) {
