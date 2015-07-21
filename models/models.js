@@ -36,7 +36,7 @@ console.log("creada Sequelize");
 var Quiz = sequelize.import(path.join(__dirname,'Quiz')); // Importar definicion de la tabla 
 console.log("imported "+storage);
 exports.Quiz = Quiz; 
-console.log("Iniciando BD");
+console.log("Iniciando BD "+DB_name);
 // sequelize.sync() inicializar tabla quiz (pregunta,respuesta) en DB
 sequelize.sync().then(function() {     // success() por then(..) ejecuta el manejador una vez creada la tabla
      Quiz.count().then(function (count){ //then
