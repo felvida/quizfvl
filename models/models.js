@@ -37,17 +37,18 @@ var Quiz = sequelize.import(path.join(__dirname,'Quiz')); // Importar definicion
 console.log("imported "+storage);
 exports.Quiz = Quiz; 
 console.log("Iniciando BD");
-// sequelize.sync() inicializar tabla quiz (pregunta,respuesta,userId) en DB
-sequelize.sync().then(function() {     // then(..) ejecuta el manejador una vez creada la tabla
-     Quiz.count().then(function (count){
+// sequelize.sync() inicializar tabla quiz (pregunta,respuesta) en DB
+sequelize.sync().then(function() {     // success() por then(..) ejecuta el manejador una vez creada la tabla
+     Quiz.count().then(function (count){ //then
 		  console.log("tenia=" + count+" regs." );
           if(count === 0) {   // la tabla se inicializa solo si está vacía
 		    console.log("Creandola MultiRegistro."); // pag.28
             Quiz.create({pregunta: 'Capital de Italia',   respuesta: 'Roma' }  );
 			Quiz.create({pregunta: 'Capital de Argentina',   respuesta: 'Buenos Aires' } );
 			Quiz.create({pregunta: 'Capital de Francia',   respuesta: 'Paris' } );
+			Quiz.create({pregunta: 'Oro parece plata no es, que es?',   respuesta: 'Platano' } );
 			Quiz.create({pregunta: 'Capital de Portugal',   respuesta: 'Lisboa' })
-			.success(function(){console.log("BD creada")}); //then
+			.then(function(){console.log("BD creada")}); //then
           }; // if count
         }); // Quiz.count
    

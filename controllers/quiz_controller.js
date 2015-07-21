@@ -1,4 +1,6 @@
 var models = require('../models/models.js'); //fvl
+
+
 // Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
 	models.Quiz.find(quizId).then(
@@ -10,20 +12,30 @@ exports.load = function(req, res, next, quizId) {
 		}
 	).catch(function(error) { next(error);});
 };
-// GET /quizes pag.32
+
+// GET /quizes debe pedir /hacer busqueda
 exports.index = function(req, res) {
+if (req.query.search) {
+	models.Quiz.findAll(
+	   {where: ["pregunta like ?", '%' + req.query.search.replace(/ /g,"%") + '%'],
+	    order: ["pregunta"] }).then(function(quizes) {
+		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
+	}).catch(function(error) { next(error);})
+} else {
 	models.Quiz.findAll().then(function(quizes) {
-		res.render('quizes/index', { quizes: quizes});
-	}).catch(function (error){next(error);});
+		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
+	}).catch(function(error) { next(error);})
+	}
 };
+
 // GET /quizes/:id ahora llama show pag.32
 exports.show = function(req, res) {
 	models.Quiz.find(req.params.quizId).then(function(quiz) {
-		res.render('quizes/show', {quiz:req.quiz, errors: []}); // pag. 27 quiz: quiz
+		res.render('quizes/show', {quiz:req.quiz, errors: []}); 
 	})
 };
 
-// GET /quizes/:id/answer pag32
+// GET /quizes/:id/answer pag.32
 exports.answer = function(req, res) {
  models.Quiz.find(req.params.quizId).then(function(quiz){
   var resultado = 'Incorrecta'; // que no distinga mayusculas
