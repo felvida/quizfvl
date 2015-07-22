@@ -33,7 +33,7 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 );
 console.log("creada Sequelize");
 
-var Quiz = sequelize.import(path.join(__dirname,'Quiz')); // Importar definicion de la tabla 
+var Quiz = sequelize.import(path.join(__dirname,'quiz')); // Importar definicion de la tabla 
 console.log("imported "+storage);
 exports.Quiz = Quiz; 
 console.log("Iniciando BD "+DB_name);
