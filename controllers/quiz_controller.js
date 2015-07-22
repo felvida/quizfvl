@@ -1,4 +1,19 @@
 var models = require('../models/models.js'); //fvl
+// GET /quizes/new pag.4 m.8
+exports.new = function(req,res){ 
+	var quiz= models.Quiz.build( { pregunta:"Pregunta",respuesta:"Respuesta"}); 
+	console.log("new>");console.log(quiz.pregunta);
+	res.render( 'quizes/new',{quiz:quiz, errors: []}  ); 
+};
+  
+ // GET /quizes/create pag.5 m.8
+exports.create = function(req,res){ 
+	var quiz= models.Quiz.build( req.body.quiz);   // creo objeto quiz de params.body 
+	console.log(quiz.pregunta);//undefined
+	quiz.save({fields:[ "pregunta","respuesta"]}). // despues guardo en BD los campos
+	then( function()   { res.redirect('/quizes');}) // despues redirigo a esta pag.		 
+};
+
 
 
 // Autoload - factoriza el código si ruta incluye :quizId
