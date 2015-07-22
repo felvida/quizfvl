@@ -1,5 +1,5 @@
 ﻿var path = require('path');
-console.log("imported path");
+console.log("models.js>imported path");
 // para Postgress o Sqlite, lee fic. .env
 // Postgres DATABASE_URL = postgres://user:passwd@host:port/database
 // SQLite   DATABASE_URL = sqlite://:@:/

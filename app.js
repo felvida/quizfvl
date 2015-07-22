@@ -1,3 +1,4 @@
+console.log("app.js>");
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon'); // favicon
@@ -21,7 +22,7 @@ app.use( partials() ); // segun pag.40 m.7
 app.use(favicon(__dirname + '/public/favicon.ico')); // segun pag. 27 m.7
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded()); // pag. 6 m.8 ,borra { extended: false }, para pasar campos en body
+app.use( bodyParser.urlencoded()); // pag. 6 m.8 ,borra { extended: false }, para pasar campos en body
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -42,7 +43,8 @@ if (app.get('env') === 'development') {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error: {},
+			errors:[] // para mostrar errores p.13 m.8
         });
     });
 }
