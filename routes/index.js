@@ -16,4 +16,5 @@ router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);//pag.27 m.7
 router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);//pag.17 m.8
 router.put( '/quizes/:quizId(\\d+)', quizController.update);//pag.17 m.8
 router.get('/quizes/author',quizController.author);
+router.delete('/quizes/:quizId(\\d+)',quizController.destroy); //pag.24 m.8
 module.exports = router;

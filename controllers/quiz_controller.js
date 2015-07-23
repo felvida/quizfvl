@@ -59,6 +59,14 @@ exports.load = function(req, res, next, quizId) {
 	).catch( function(error) { next(error);});
 };
 
+// DELETE /UIZES/:quizId BORRAR DE LA BD /2
+exports.destroy = function(req, res) {
+	console.log("destroy>");
+	req.quiz.destroy().then( function() {
+			res.redirect('/quizes');
+	}).catch( function(error) { next(error);});
+};
+
 // GET /quizes 
 exports.index = function(req, res) {
 if (req.query.search) {
