@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var partials= require( 'express-partials'); // pag.40
-
+var methodOverride = require('method-override'); //pag.18 m.8
 var routes = require('./routes/index');
 // var users = require('./routes/users'); // segun pag.24 m.7
 
@@ -24,6 +24,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use( bodyParser.urlencoded()); // pag. 6 m.8 ,borra { extended: false }, para pasar campos en body
 app.use(cookieParser());
+app.use(methodOverride('_method')); // pag.18 m.8 nombre para encapsulado
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);// segun pag.24 m.7

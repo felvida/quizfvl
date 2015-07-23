@@ -6,31 +6,31 @@ exports.new = function(req,res){
 	console.log("new>"+quiz.pregunta);
 	res.render( 'quizes/new',{quiz:quiz, errors: []}  ); 
 };
-  
- /* POST /quizes/create pag.5 m.8
-exports.create = function(req,res){ 
-	var quiz= models.Quiz.build( req.body.quiz);   // creo objeto quiz de params.body 
-	
-	quiz // si no  crea. if null 
-	.validate() // validar entrada segun definicion campo
-	.then( // si hay problemas Undefined is not a function
-	  function(err){
-		if (err){  
-		  
-	      res.render('/quizes/new',{quiz:quiz, errors:err.errors});
-	    } else {  
-		  
-	      quiz	 //  sin problemas save  guarda en BD los campos
-	     .save( {fields: [ "pregunta","respuesta"]} ) 
-	     .then( function()   { res.redirect('/quizes')}) // despues redirigo a esta pag.		   
-	    } //else
-      } //function(err)	
-	); //then si hay problemas
-}; //exports
-*/
+ exports.edit = function(req,res){ 
+	var quiz= req.quiz; 
+	console.log("edit>"+quiz.pregunta);
+	res.render( 'quizes/edit',{quiz:quiz, errors: []}  ); 
+};
+ 
 exports.create = function(req, res){
 var quiz = models.Quiz.build( req.body.quiz );
 console.log("create>"+quiz.pregunta+":"+quiz.respuesta);// decia undefined!! por override mal
+var errors = quiz.validate();//ya que el objeto errors no tiene then(
+if (errors)
+{   console.log("Valida err>"); 
+	var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
+	for (var prop in errors) errores[i++]={message: errors[prop]};
+	res.render('quizes/edit', {quiz: quiz, errors: errores});
+} else { console.log("Valida ok>");
+	req.quiz // save: guarda en DB campos pregunta y respuesta 
+	.save({fields: ["pregunta", "respuesta"]})
+	.then( function(){ res.redirect('/quizes')}) ;
+}
+};
+exports.update = function(req, res){
+req.quiz.pregunta =  req.body.quiz.pregunta;
+req.quiz.respuesta =  req.body.quiz.respuesta;
+console.log("update>"+req.quiz.pregunta+":"+req.quiz.respuesta);
 var errors = quiz.validate();//ya que el objeto errors no tiene then(
 if (errors)
 {   console.log("validate err>"); 
