@@ -1,6 +1,7 @@
-<!--show.ejs p.27--><h2>Juego de preguntas</h2>
+<!--show.ejs p2p M.8--><h2>Juego de preguntas</h2>
 <form method="get" action="/quizes/<%= quiz.id%>/answer">
-   Pregunta: <%= quiz.pregunta %>  <p>
+ <p>Tema:<%= quiz.tema %></p>
+ <p>Pregunta: <%= quiz.pregunta %>
    <input type="text" name="respuesta" value="Responde aqui"/>
    <input type="submit" value="Envia"/>
-  </p>
+ </p>

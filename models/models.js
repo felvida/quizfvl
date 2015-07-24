@@ -42,12 +42,12 @@ sequelize.sync().then(function() {     // success() por then(..) ejecuta el mane
      Quiz.count().then(function (count){ //then
 		  console.log("tenia=" + count+" regs." );
           if(count === 0) {   // la tabla se inicializa solo si está vacía
-		    console.log("Creandola MultiRegistro."); // pag.28
-            Quiz.create({pregunta: 'Capital de Italia',   respuesta: 'Roma' }  );
-			Quiz.create({pregunta: 'Capital de Argentina',   respuesta: 'Buenos Aires' } );
-			Quiz.create({pregunta: 'Capital de Francia',   respuesta: 'Paris' } );
-			Quiz.create({pregunta: 'Oro parece plata no es, que es?',   respuesta: 'Platano' } );
-			Quiz.create({pregunta: 'Capital de Portugal',   respuesta: 'Lisboa' })
+		    console.log("Creandola MultiRegistro Temario."); // p2p m.8
+            Quiz.create({pregunta: 'Capital de Italia',   respuesta: 'Roma',tema:"Otro" }  );
+			Quiz.create({pregunta: 'Capital de Argentina',respuesta: 'Buenos Aires',tema:"Otro" } );
+			Quiz.create({pregunta: 'Capital de Francia',  respuesta: 'Paris' ,tema:"Otro"} );
+			Quiz.create({pregunta: 'Oro parece plata no es, que es?',respuesta:'Platano',tema:"Ocio"});
+			Quiz.create({pregunta: 'Capital de Portugal', respuesta: 'Lisboa',tema:"Otro" })
 			.then(function(){console.log("BD creada")}); //then
           }; // if count
         }); // Quiz.count

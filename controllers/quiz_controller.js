@@ -3,7 +3,8 @@ var models = require('../models/models.js'); // se construye en fvl2015.heroku.c
 
 // GET /quizes/new pag.4 m.8
 exports.new = function(req,res){ 
-	var quiz= models.Quiz.build( { pregunta:"APreguntar",respuesta:"Respuesta"}); 
+	var quiz= models.Quiz.build( 
+	{ pregunta:"Enunciado",respuesta:"Solución",tema:"Materia"}  ); // P2p Mod.8
 	console.log("new>"+quiz.pregunta);
 	res.render( 'quizes/new',{quiz:quiz, errors: []}  ); 
 };
@@ -16,7 +17,7 @@ exports.new = function(req,res){
 // POST  /quizes/create
 exports.create = function(req, res){
 var quiz = models.Quiz.build( req.body.quiz );
-console.log("create>"+quiz.pregunta+":"+quiz.respuesta);// decia undefined!! por override mal
+console.log("create>"+quiz.pregunta+":"+quiz.respuesta+"."+quiz.tema);// p2p m.8
 var errors = quiz.validate(); //ya que el objeto errors no tiene then(
 if (errors)
  {   console.log("Valida err>"); 
@@ -25,15 +26,16 @@ if (errors)
 	res.render('quizes/new', {quiz: quiz, errors: errores});
  } else { console.log("Valida ok>");
 	quiz // save: guarda en DB campos pregunta y respuesta 
-	.save({fields: ["pregunta", "respuesta"]})
+	.save({fields: ["pregunta", "respuesta","tema"]}) // p2p m.8
 	.then( function(){ res.redirect('/quizes')}) ;
  }
 };
-// PUT /quizes/ID:
+// PUT /quizes/ID: despues de /edit
 exports.update = function(req, res){
 req.quiz.pregunta =  req.body.quiz.pregunta;
 req.quiz.respuesta =  req.body.quiz.respuesta;
-console.log("update>"+req.quiz.pregunta+":"+req.quiz.respuesta);
+req.quiz.tema =  req.body.quiz.tema;
+console.log("update>"+req.quiz.pregunta+":"+req.quiz.respuesta+"."+req.quiz.tema);
 var errors = req.quiz.validate();//ya que segun version el objeto errors no tiene then()
 if (errors)
 {   console.log("validate err>"); 
@@ -42,7 +44,7 @@ if (errors)
 	res.render('quizes/edit', {quiz: quiz, errors: errores});
 } else { console.log("validate ok>");
 	req.quiz // save: guarda en DB campos pregunta y respuesta de quiz
-	.save({fields: ["pregunta", "respuesta"]})
+	.save({fields: ["pregunta", "respuesta","tema"]}) // p2p m.8
 	.then( function(){ res.redirect('/quizes')}) ;
 }
 };
