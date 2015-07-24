@@ -1,4 +1,5 @@
-var express = require('express'); //fvl views/index.js
+// views/index.js 				desplegado en fvl2015.heroku.com 
+var express = require('express'); 
 var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 
