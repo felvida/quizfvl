@@ -5,6 +5,7 @@ var favicon = require('serve-favicon'); // favicon
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session= require('express-session'); 	// 	importa MW instalado antes con npm Quiz16 m.9
 
 var partials= require( 'express-partials'); // pag.40
 var methodOverride = require('method-override'); //pag.18 m.8
@@ -23,9 +24,19 @@ app.use(favicon(__dirname + '/public/favicon.ico')); // segun pag. 27 m.7
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use( bodyParser.urlencoded()); // pag. 6 m.8 ,borra { extended: false }, para pasar campos en body
-app.use(cookieParser());
+app.use(cookieParser('fvl 2015')); 		//	semilla para encriptar
+app.use(session() );  				//  	instala MW
 app.use(methodOverride('_method')); // pag.18 m.8 nombre para encapsulado
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Helpers dinamicos:
+app.use( function( req ,res ,next) {  // Quiz 16 m.9
+	 if ( !req.path.match(/\/login|\/logout/)) { // si ruta /login o /logout 
+	   req.session.redir = req.path;	// paso 1.c redirigir a form /login o /logout
+	 } //if
+	 res.locals.session= req.session; // paso 1.b pasa parametro session
+	 next();
+}); //app.use
 
 app.use('/', routes);// segun pag.24 m.7
 // catch 404 and forward to error handler
@@ -36,8 +47,8 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-// development error handler
-// will print stacktrace
+
+// 		development error handler> will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
@@ -48,9 +59,7 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
-// production error handler
-// no stacktraces leaked to user
+// 		production error handler> no stacktraces to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -58,6 +67,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

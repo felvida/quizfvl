@@ -1,4 +1,4 @@
-﻿# Examples
+﻿# Example Quiz 17 m.9 Autorizacion para editar preguntas a usuario registrado
 Version de quiz para comprobar ejercicios del curos
 repositorio inicial https://github.com/jquemada/random
 

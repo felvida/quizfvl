@@ -2,7 +2,7 @@
 <form method="get" action="/quizes/<%= quiz.id%>/answer">
  <h5>Tema:<%= quiz.tema %></h5>
  <p>Pregunta: <%= quiz.pregunta %>
-   <input type="text" name="respuesta" value="Responde aqui"/>
+   <input type="text" name="respuesta" value="Texto"/>
    <input type="submit" value="Enviar"/>
  </p></form>
  <p><a href="/quizes/<%=quiz.id%>/comments/new"><button>Nuevo comentario</button></a></p>
