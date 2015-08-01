@@ -1,7 +1,12 @@
-<!--show.ejs p2p M.8--><h2>Juego de preguntas</h2>
+<!--show.ejs--><h2>Adivinanza</h2>
 <form method="get" action="/quizes/<%= quiz.id%>/answer">
- <p>Tema:<%= quiz.tema %></p>
+ <h5>Tema:<%= quiz.tema %></h5>
  <p>Pregunta: <%= quiz.pregunta %>
    <input type="text" name="respuesta" value="Responde aqui"/>
-   <input type="submit" value="Envia"/>
- </p>
+   <input type="submit" value="Enviar"/>
+ </p></form>
+ <p><a href="/quizes/<%=quiz.id%>/comments/new"><button>Nuevo comentario</button></a></p>
+<p>Comentarios:</p>
+<%for(index in quiz.comments){%>
+		<h6>- <%=quiz.comments[index].texto%></h6>
+<%} %>

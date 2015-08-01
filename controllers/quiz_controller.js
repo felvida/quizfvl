@@ -8,12 +8,7 @@ exports.new = function(req,res){
 	console.log("new>"+quiz.pregunta);
 	res.render( 'quizes/new',{quiz:quiz, errors: []}  ); 
 };
-// GET /quizes/:id/edit
- exports.edit = function(req,res){ 
-	var quiz= req.quiz; // autoload instancia quiz
-	console.log("edit>"+quiz.pregunta);
-	res.render( 'quizes/edit',{quiz:quiz, errors: []}  ); 
-};
+
 // POST  /quizes/create
 exports.create = function(req, res){
 var quiz = models.Quiz.build( req.body.quiz );
@@ -29,6 +24,47 @@ if (errors)
 	.save({fields: ['pregunta', 'respuesta','tema']}) // p2p m.8
 	.then( function(){ res.redirect('/quizes')}) ;
  }
+};
+// GET /quizes/author
+exports.author = function(req, res) {
+   res.render(    'quizes/author', { errors:[] }  ); // pag.14 mod.8
+};
+
+// GET /quizes 
+exports.index = function(req, res) {
+if (req.query.search) {
+	models.Quiz.findAll(
+	   {where: ["pregunta like ?", '%' + req.query.search.replace(/ /g,"%") + '%'],
+	    order: ["pregunta"] }).then(function(quizes) {
+		res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
+	}).catch(function(error) { next(error);})
+} else {
+	models.Quiz.findAll().then(function(quizes) {
+		res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
+	}).catch(function(error) { next(error);})
+	}
+};
+
+// Autoload :quizId - factoriza el código que la ruta incluye /2
+exports.load = function(req, res, next, quizId) {
+models.Quiz.find( {
+			where: {id: Number(quizId)},
+			include: [{model:models.Comment}]
+		} ).then(
+		function(quiz) {
+			if (quiz) {
+				req.quiz = quiz;
+				next();
+			} else { next(new Error('No hallo quizId=' + quizId));}
+		}
+	).catch( function(error) { next(error);});
+};
+
+// GET /quizes/:id/edit
+ exports.edit = function(req,res){ 
+	var quiz= req.quiz; // autoload instancia quiz
+	console.log("edit>"+quiz.pregunta);
+	res.render( 'quizes/edit',{quiz:quiz, errors: []}  ); 
 };
 // PUT /quizes/ID: despues de /edit
 exports.update = function(req, res){
@@ -49,19 +85,7 @@ if (errors)
 }
 };
 
-// Autoload :quizId - factoriza el código que la ruta incluye /2
-exports.load = function(req, res, next, quizId) {
-	models.Quiz.find(quizId).then(
-		function(quiz) {
-			if (quiz) {
-				req.quiz = quiz;
-				next();
-			} else { next(new Error('No hallo quizId=' + quizId));}
-		}
-	).catch( function(error) { next(error);});
-};
-
-// DELETE /UIZES/:quizId BORRAR DE LA BD /2
+// DELETE /quizes/:quizId BORRAR DE LA BD /2
 exports.destroy = function(req, res) {
 	console.log("destroy>");
 	req.quiz.destroy().then( function() {
@@ -69,20 +93,6 @@ exports.destroy = function(req, res) {
 	}).catch( function(error) { next(error);});
 };
 
-// GET /quizes 
-exports.index = function(req, res) {
-if (req.query.search) {
-	models.Quiz.findAll(
-	   {where: ["pregunta like ?", '%' + req.query.search.replace(/ /g,"%") + '%'],
-	    order: ["pregunta"] }).then(function(quizes) {
-		res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
-	}).catch(function(error) { next(error);})
-} else {
-	models.Quiz.findAll().then(function(quizes) {
-		res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
-	}).catch(function(error) { next(error);})
-	}
-};
 
 // GET /quizes/:id ahora llama show pag.32 m.7
 exports.show = function(req, res) {
@@ -102,7 +112,3 @@ exports.answer = function(req, res) {
 };
 
 
-// GET /quizes/author
-exports.author = function(req, res) {
-   res.render(    'quizes/author', { errors:[] }  ); // pag.14 mod.8
-};

@@ -1,12 +1,15 @@
+*                    { margin: 0; padding: 0; }
 body {
+  background: #144;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
+#page-wrap           { margin: 2% auto; color: white; }
 a {
   color: #00B7FF;
 }
 
 nav span             { margin: 0px 10px 0px 0px;
   			   display: inline-block;}
-#ErrorMsgs           { color: #f61; font-size: smaler}			   
+#ErrorMsgs           { color: #f61; font-size: smaler}		
+.right 				 {float: right;}	   

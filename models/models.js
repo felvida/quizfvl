@@ -1,12 +1,13 @@
 ﻿var path = require('path');
-console.log("models.js>imported path");
-// para Postgress o Sqlite, lee fic. .env
-// Postgres DATABASE_URL = postgres://user:passwd@host:port/database
-// SQLite   DATABASE_URL = sqlite://:@:/
-var urlK = process.env.DATABASE_URL; // PATH si lo hace
-console.log("DATABASE_URL="+urlK);
-var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
-console.log("creada url");
+console.log("models.js>imported path"); 	// configuracion DB_URL 
+// SQLite (lee fichero .env) > DATABASE_URL = sqlite://:@:/
+// Postgres Heroku (lo toma de sus VARS) DATABASE_URL = postgres://user:passwd@host:port/database
+var urlK = process.env.DATABASE_URL; 
+console.log("DATABASE_URL="+urlK); 
+if (!urlK) // si es null  lee lo anterior sobre config. DB_URL
+	console.log("Falta .env(SQLITE) ó Var.DATABASE_URL(Postgres Heroku)"); // 
+var url = urlK.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+console.log("creada url[]");
 
 var DB_name  = (url[6]||null);
 var user     = (url[2]||null);
@@ -16,7 +17,7 @@ var dialect  = (url[1]||null);
 var port     = (url[5]||null);
 var host     = (url[4]||null);
 var storage  = process.env.DATABASE_STORAGE;
-console.log("creadas vars. gestion BD:"+protocol);
+console.log("creadas vars. BD,protocol=:"+protocol);
 
 var Sequelize = require('sequelize'); // Cargar Modelo ORM
 console.log("imported Sequelize");
@@ -32,10 +33,19 @@ var sequelize = new Sequelize(DB_name, user, pwd,
   }      
 );
 console.log("creada Sequelize");
+var qfile= path.join(__dirname,'quiz');
+var Quiz = sequelize.import(qfile); // Importar definicion de la tabla models/quiz.js
+console.log("imported "+qfile);
+var cfile= path.join(__dirname,'comment');
+var Comment = sequelize.import(cfile); // Importa definicion de comment 
+console.log("imported "+cfile);
 
-var Quiz = sequelize.import(path.join(__dirname,'quiz')); // Importar definicion de la tabla 
-console.log("imported "+storage);
+Comment.belongsTo(Quiz); // crea nuevo campo Quiz.comment 
+Quiz.hasMany(Comment);   // lo relaciona Comment.QuizId (N regs.), ver relacion entre tablas pag.5 m.9, 
+
 exports.Quiz = Quiz; 
+exports.Comment = Comment; 
+
 console.log("Iniciando BD "+DB_name);
 // sequelize.sync() inicializar tabla quiz (pregunta,respuesta) en DB
 sequelize.sync().then(function() {     // success() por then(..) ejecuta el manejador una vez creada la tabla
