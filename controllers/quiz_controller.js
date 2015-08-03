@@ -47,14 +47,16 @@ if (req.query.search) {
 
 // Autoload :quizId - factoriza el código que la ruta incluye /2
 exports.load = function(req, res, next, quizId) {
-models.Quiz.find( {
+	console.log("quiz_autoload")
+	// http://docs.sequelizejs.com/en/latest/docs/models-usage/ nested
+models.Quiz.findOne( {
 			where: {id: Number(quizId)},
-			include: [{model:models.Comment}]
+			include: [{model: models.Comment}]
 		} ).then(
 		function(quiz) {
 			if (quiz) {
 				req.quiz = quiz;
-				next();
+				next(); // invoca sig. MW
 			} else { next(new Error('No hallo quizId=' + quizId));}
 		}
 	).catch( function(error) { next(error);});
@@ -72,7 +74,7 @@ req.quiz.pregunta =  req.body.quiz.pregunta;
 req.quiz.respuesta =  req.body.quiz.respuesta;
 req.quiz.tema =  req.body.quiz.tema;
 console.log("update>"+req.quiz.pregunta+":"+req.quiz.respuesta+"."+req.quiz.tema);
-var errors = req.quiz.validate();//ya que segun version el objeto errors no tiene then()
+var errors = req.quiz.validate(); //ya que segun version el objeto errors no tiene then()
 if (errors)
 {   console.log("valido err>"); 
 	var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
@@ -96,19 +98,17 @@ exports.destroy = function(req, res) {
 
 // GET /quizes/:id ahora llama show pag.32 m.7
 exports.show = function(req, res) {
-	models.Quiz.find(req.params.quizId).then(function(quiz) {
-		res.render('quizes/show', {quiz:req.quiz, errors: []}); //pag.14 mod.8
-	})
+	console.log("quiz_show");		
+	res.render('quizes/show', {quiz:req.quiz, errors: []}); //pag.14 mod.8
 };
 
 // GET /quizes/:id/answer pag.32
 exports.answer = function(req, res) {
- models.Quiz.find(req.params.quizId).then(function(quiz){
   var resultado = 'Incorrecta'; // que no distinga mayusculas
   if ( req.query.respuesta.toLowerCase() ===req.quiz.respuesta.toLowerCase() ) {
-    resultado = 'Correcta';  }
-  res.render('quizes/answer',{ quiz: req.quiz, respuesta: resultado,errors:[] });//pag.14 mod.8
-  })
+				resultado = 'Correcta';  }
+  res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado,errors:[] });//pag.14 mod.8
+
 };
 
 

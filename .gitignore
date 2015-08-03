@@ -1,7 +1,11 @@
 node_modules
+node_modules/*
 *.log
 ico
 *.bat
-quiz.sqlite
+quiz.sqlite*
 .env
+*.exe
+*.dll
+*.bat
 *~
