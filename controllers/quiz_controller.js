@@ -12,7 +12,7 @@ exports.new = function(req,res){
 // POST  /quizes/create
 exports.create = function(req, res){
 var quiz = models.Quiz.build( req.body.quiz );
-console.log("create>"+quiz.pregunta+":"+quiz.respuesta+"."+quiz.tema);// p2p m.8
+console.log("quiz_create>"+quiz.pregunta+":"+quiz.respuesta+"."+quiz.tema);// p2p m.8
 var errors = quiz.validate(); //ya que el objeto errors no tiene then(
 if (errors)
  {   console.log("error campos>"); 
@@ -47,8 +47,7 @@ if (req.query.search) {
 
 // Autoload :quizId - factoriza el código que la ruta incluye /2
 exports.load = function(req, res, next, quizId) {
-	console.log("quiz_autoload")
-	// http://docs.sequelizejs.com/en/latest/docs/models-usage/ nested
+console.log("quiz_autoload")	// http://docs.sequelizejs.com/en/latest/docs/models-usage/ Nested
 models.Quiz.findOne( {
 			where: {id: Number(quizId)},
 			include: [{model: models.Comment}]
@@ -96,7 +95,7 @@ exports.destroy = function(req, res) {
 };
 
 
-// GET /quizes/:id ahora llama show pag.32 m.7
+// GET /quizes/:id ,la invoca autolad, y el pasa show.ejs   pag.32 m.7
 exports.show = function(req, res) {
 	console.log("quiz_show");		
 	res.render('quizes/show', {quiz:req.quiz, errors: []}); //pag.14 mod.8
