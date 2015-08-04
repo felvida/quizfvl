@@ -1,4 +1,4 @@
-console.log("app.js>");
+﻿console.log("app.js>");
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon'); // favicon
@@ -29,6 +29,20 @@ app.use(session() );  				//  	instala MW
 app.use(methodOverride('_method')); // pag.18 m.8 nombre para encapsulado
 app.use(express.static(path.join(__dirname, 'public')));
 
+// New MW autologout
+app.use(function(req, res, next) {
+    if(req.session.user){									// si estamos en una sesion
+        if(!req.session.mtiempo){							//primera vez se crea la var mtiempo
+			req.session.mtiempo=(new Date()).getTime(); }    // ya existe la var. con t. del ultimo click del usuario
+        if( (new Date()).getTime()-req.session.mtiempo > 120000){ //pasaron 120000ms(=2minutos)?
+				req.session.mtiempo =null; 	 	// 	que SI> reset de mtiempo para cuando loguee la proxima vez
+                delete req.session.user;     	// 		y eliminamos el usuario, var.usada para usuario logueado
+            }else{								//	que NO> se actualiza mtiempo
+                req.session.mtiempo=(new Date()).getTime();
+            }
+    }
+    next();
+});
 // Helpers dinamicos:
 app.use( function( req ,res ,next) {  // Quiz 16 m.9
 	 if ( !req.path.match(/\/login|\/logout/)) { // si ruta /login o /logout 

@@ -13,18 +13,21 @@ exports.new = function(req,res){
 exports.create = function(req, res){
 var quiz = models.Quiz.build( req.body.quiz );
 console.log("quiz_create>"+quiz.pregunta+":"+quiz.respuesta+"."+quiz.tema);// p2p m.8
-var errors = quiz.validate(); //ya que el objeto errors no tiene then(
-if (errors)
- {   console.log("error campos>"); 
-	var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
-	for (var prop in errors) errores[i++]={message: errors[prop]};
-	res.render('quizes/new', {quiz: quiz, errors: errores});
- } else { console.log("campos ok>");
-	quiz // save: guarda en DB campos pregunta y respuesta 
-	.save({fields: ['pregunta', 'respuesta','tema']}) // p2p m.8
-	.then( function(){ res.redirect('/quizes')}) ;
- }
+ quiz
+  .validate()
+  .then(
+    function(err){
+      if (err) {
+        res.render('quizes/new', {quiz: quiz, errors: err.errors});
+      } else {
+        quiz // save: guarda en DB campos pregunta y respuesta de quiz
+        .save({fields: ["pregunta", "respuesta"]})
+        .then( function(){ res.redirect('/quizes')}) 
+      }      // res.redirect: Redirección HTTP a lista de preguntas
+    }
+  ).catch(function(error){next(error)});
 };
+
 // GET /quizes/author
 exports.author = function(req, res) {
    res.render(    'quizes/author', { errors:[] }  ); // pag.14 mod.8
@@ -73,17 +76,19 @@ req.quiz.pregunta =  req.body.quiz.pregunta;
 req.quiz.respuesta =  req.body.quiz.respuesta;
 req.quiz.tema =  req.body.quiz.tema;
 console.log("update>"+req.quiz.pregunta+":"+req.quiz.respuesta+"."+req.quiz.tema);
-var errors = req.quiz.validate(); //ya que segun version el objeto errors no tiene then()
-if (errors)
-{   console.log("valido err>"); 
-	var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilida con layout
-	for (var prop in errors) errores[i++]={message: errors[prop]};
-	res.render('quizes/edit', {quiz: quiz, errors: errores});
-} else { console.log("valido ok>");
-	req.quiz // save: guarda en DB campos pregunta y respuesta de quiz
-	.save({fields: ["pregunta", "respuesta","tema"]}) // p2p m.8
-	.then( function(){ res.redirect('/quizes')}) ;
-}
+req.quiz
+  .validate() // version sequelize 3.0.0
+  .then(
+    function(err){
+      if (err) {
+        res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+      } else {
+        req.quiz     // save: guarda campos pregunta y respuesta en DB
+        .save( {fields: ["pregunta", "respuesta"]})
+        .then( function(){ res.redirect('/quizes');});
+      }     // Redirección HTTP a lista de preguntas (URL relativo)
+    }
+  ).catch(function(error){next(error)});
 };
 
 // DELETE /quizes/:quizId BORRAR DE LA BD /2

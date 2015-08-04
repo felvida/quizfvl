@@ -7,7 +7,7 @@ var sessionController = require('../controllers/session_controller');//p.19 m.9
 
 /* GET / home page */
 router.get('/', function(req, res) {
-	res.render('index', { title: 'QUIZ 19' ,errors:[]});// pag.13 m.8
+	res.render('index', { title: 'QUIZ P2P M.9' ,errors:[]});// pag.13 m.8
 });
 router.param('quizId',quizController.load); // quiz_autoload
 router.param('commentId', commentController.load);  // comment_autoload :commentId
