@@ -1,0 +1,29 @@
+<table>
+	<tr>* Estadisticas *
+	<th><strong>Datos
+	<% var f=new Date();var  min=f.getMinutes(); if (min<10) min="0"+min %>
+	<%=""+f.getDate()+"/"+f.getMonth()+"/"+f.getFullYear()+" "+f.getHours()+":"+min %>
+	</strong></th>
+	</tr><tr>
+		<td>Preguntas(Quizes)</td>
+		<td><%=quiz%></td>
+	</tr><tr>	
+		<td>-Quizes comentadas</td>
+		<td><%=quizconcoment%></td>
+    </tr><tr>
+		<td>-Quizes sin comentar</td>
+		<td><%=quizsincoment%></td>
+	</tr><tr>
+		<td>Comentarios(Notas)</td>
+		<td><%=coment%></td>
+	</tr><tr>
+		<td>-Notas publicadas</td>
+		<td><%=comentpublicado%></td>
+	</tr><tr>
+		<td>-Notas sin publicar</td>
+		<td><%=coment-comentpublicado%></td>	
+	</tr><tr>
+		<td>Media(Notas/Quizes)</td>
+		<td><%=media.toFixed(2)%></td>		
+    </tr>
+</table>

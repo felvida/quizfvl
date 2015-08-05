@@ -1,0 +1,8 @@
+
+Pasos a pasar de mi version autologout, a la que obtiene estadisticas
+incluir opcion en menu principal > layout.js
+incluir captura de /stadistics, incluir  >routes/index.js
+			var statisticController = require('../controllers/statistic_controller');
+			router.get('/quizes/stadistics',  statisticController.resumen);
+incluir controlador stadistic >controller/controller_statistic.js
+incluir vista views/stadistic/resulta.ejs

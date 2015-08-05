@@ -4,7 +4,7 @@ var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller'); 
 var sessionController = require('../controllers/session_controller');//p.19 m.9
-
+var statisticController = require('../controllers/statistic_controller');//p2p M.9
 /* GET / home page */
 router.get('/', function(req, res) {
 	res.render('index', { title: 'QUIZ P2P M.9' ,errors:[]});// pag.13 m.8
@@ -34,6 +34,8 @@ router.get('/quizes/:quizId(\\d+)', quizController.show); //pag.27 m.7
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);//pag.27 m.7
 router.get('/quizes/author',quizController.author);
 
+//router.get('/quizes/stadistics', sessionController.LoginRequired, statisticController.resumen);
+router.get('/quizes/stadistics',  statisticController.resumen);
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new); // nueva comentario pag.7 m.9
 router.post('/quizes/:quizId(\\d+)/comments',    commentController.create); // nueva comentario pag.7 m.9
 router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', 
